@@ -1,0 +1,80 @@
+#UploadScrapper {
+	background-color: rgb(255, 255, 255);
+}
+
+#header_line {
+    color: #009688
+}
+
+#lbl_poweredby {
+    color: #5A63A8;
+}
+
+#pgb_processing {
+    min-height: 12px;
+    max-height: 12px;
+    border-radius: 6px;
+    text-align: right;
+}
+
+#pgb_processing::chunk {
+    border-radius: 6px;
+    background-color: #009688;
+}
+
+QLabel {
+    background-color: white;
+}
+
+QPushButton {
+    background-color: #5A63A8;
+    color: white;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 16px;
+}
+QPushButton:hover {
+    font-size: 17px;
+    background-color: #D25853;
+}
+
+QLineEdit {
+    padding: 10px;
+    border-top: 1px solid #5A63A8;
+    border-bottom: 1px solid #D25853;
+}
+
+QComboBox {
+    padding: 10px;
+    border-top: 1px solid #5A63A8;
+    border-bottom: 1px solid #D25853;
+    background: white;
+}
+
+QComboBox::drop-down {
+    width: 40px;
+}
+
+QComboBox::down-arrow {
+    /* image: url(asset/down-squared.png); */
+    image: url(asset/drag-list-down.png);
+}
+
+QSpinBox {
+    border-top: 1px solid #5A63A8;
+    border-bottom: 1px solid #D25853;
+    background: white;
+}
+
+QSpinBox::up-arrow {
+    image: url(asset/sort-numeric-up.png);
+}
+
+QSpinBox::down-arrow {
+    image: url(asset/sort-numeric-down.png);
+}
+
+QTableWidget {
+    border-top: 1px solid #5A63A8;
+    border-bottom: 1px solid #D25853;
+}

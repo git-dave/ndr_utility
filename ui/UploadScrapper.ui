@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UploadScrapper</class>
+ <widget class="QMainWindow" name="UploadScrapper">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1330</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1330</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1330</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>VictorMono Nerd Font Mono</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Upload page scrapper</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../asset/about.png</normaloff>../asset/about.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btn_scrape">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>524</y>
+      <width>371</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font</family>
+      <pointsize>14</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Scrape</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbo_webdriver">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>171</y>
+      <width>370</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+    <property name="placeholderText">
+     <string>Select a web driver</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spb_number_of_page_scrape">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>441</y>
+      <width>261</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>10000</number>
+    </property>
+    <property name="value">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>22</x>
+      <y>411</y>
+      <width>251</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Number of page(s) to scrape</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spb_sleep_time">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>441</y>
+      <width>201</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>10000</number>
+    </property>
+    <property name="value">
+     <number>4</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>411</y>
+      <width>201</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sleep time (sec)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txt_url">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>231</y>
+      <width>611</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>http://ndr.phis3project.org.ng/uploads/partner-uploads</string>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>URL</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txt_email">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>291</y>
+      <width>321</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="text">
+     <string>dudanwojo@cihpng.org</string>
+    </property>
+    <property name="placeholderText">
+     <string>Email</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txt_password">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>291</y>
+      <width>251</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Focus#2021</string>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+    <property name="placeholderText">
+     <string>Password</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_ndr_header">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>20</y>
+      <width>331</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../asset/ndr-loge.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txt_search">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>351</y>
+      <width>611</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Search by DATIM code OR facility name</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Line" name="header_line">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>1291</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_poweredby">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>657</y>
+      <width>211</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>10</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>Powered by TouchF5 Ent.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="openExternalLinks">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="pgb_processing">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>607</y>
+      <width>1291</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>VictorMono Nerd Font Mono</family>
+      <pointsize>12</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="textVisible">
+     <bool>true</bool>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_search">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>360</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../asset/search.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tbw_processed">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>160</y>
+      <width>631</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>48</number>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>31</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>37</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Login-user</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>VictorMono Nerd Font Mono</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Facility</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>VictorMono Nerd Font Mono</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Upload date</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>VictorMono Nerd Font Mono</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Batch No.</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>VictorMono Nerd Font Mono</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Zip file</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>VictorMono Nerd Font Mono</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Total</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Fails</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Passes</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Pending</string>
+     </property>
+    </column>
+   </widget>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>cbo_webdriver</tabstop>
+  <tabstop>txt_url</tabstop>
+  <tabstop>txt_email</tabstop>
+  <tabstop>txt_password</tabstop>
+  <tabstop>txt_search</tabstop>
+  <tabstop>spb_number_of_page_scrape</tabstop>
+  <tabstop>spb_sleep_time</tabstop>
+  <tabstop>btn_scrape</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
