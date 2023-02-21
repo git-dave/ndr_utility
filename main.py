@@ -11,7 +11,7 @@ import selenium.webdriver.support.expected_conditions as ec
 from colorama import init, Fore, Style
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QThread, pyqtSignal, pyqtSlot
-from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem, QHeaderView
+from PyQt6.QtWidgets import QMessageBox, QTableWidgetItem
 from ui.UploadScrapper import Ui_UploadScrapper
 
 
@@ -117,7 +117,7 @@ class ScrappingWorkerThread(QThread):
     @pyqtSlot(dict)
     def form_values(self, data):
         self.input_data = data                                 # Load the data into the empty dictionary
-        print('Calling from Thread.\n' + str(self.input_data))
+        print(Style.BRIGHT + Fore.LIGHTYELLOW_EX + 'Calling from Thread.\n' + str(self.input_data))
 
     def run(self):
         if self.input_data['driver'] == '':
