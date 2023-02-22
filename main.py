@@ -81,6 +81,7 @@ class MainApp(QtWidgets.QMainWindow):
         self.scrapping_worker.update_progress.connect(self.evt_update_progress)
         self.scrapping_worker.user_feedback.connect(self.evt_feedbacks)
         self.scrapping_worker.processed_data.connect(self.evt_update_table_progress)
+        self.scrapping_worker.enable_scrape_button.connect(self.evt_enable_scrape_button)
 
     def evt_feedbacks(self, feedback):
         if feedback['message_type'] == 'success':
@@ -106,12 +107,16 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.tbw_processed.setItem(current_row_count, 7, QTableWidgetItem(data['passes']))
         self.ui.tbw_processed.setItem(current_row_count, 8, QTableWidgetItem(data['pending']))
 
+    def evt_enable_scrape_button(self, status):
+        self.ui.btn_scrape.setEnabled(status)
+
 
 class ScrappingWorkerThread(QThread):
     user_feedback = pyqtSignal(dict)
     required_feedback = pyqtSignal(str)
     update_progress = pyqtSignal(int)
     processed_data = pyqtSignal(dict)
+    enable_scrape_button = pyqtSignal(bool)
     input_data = {}                 # Dictionary initialization
 
     @pyqtSlot(dict)
@@ -141,6 +146,7 @@ class ScrappingWorkerThread(QThread):
         timeout_duration = 90                                                   # Set default page timeout to in seconds
         search_query = self.input_data['search']                                # Ser default search string to blank
         ndr_driver = ''                                                         # Default URL is blank
+        self.enable_scrape_button.emit(False)                                   # Send a signal to disable the scrape button when the processing start
 
         try:
             # Decide which web drive to use
@@ -158,6 +164,8 @@ class ScrappingWorkerThread(QThread):
             # I am interested in showing the user the exception thrown, but I want to only show the message part and not the full
             # exception. To achieve this I had to call the __dic__ list and give it the msg key which is the dictionary I am interested in.
             self.user_feedback.emit({'message': e.__dict__['msg'] + '\n\nUpdate the web driver to a version that supports your current browser\'s version and try again.', 'title': 'Browser launch failed', 'message_type': 'error'})
+            ndr_driver.close()
+            self.enable_scrape_button.emit(True)                            # Send a signal to enable the scrape button
             return
 
         wait_timeout = WebDriverWait(ndr_driver, timeout_duration)
@@ -195,9 +203,12 @@ class ScrappingWorkerThread(QThread):
                 max_page_to_scrape = int(last_val)
 
             print(Style.BRIGHT + Fore.LIGHTCYAN_EX + 'The processing will scrape ' + str(max_page_to_scrape) + ' page(s) from the NDR upload web page.')
-        except TimeoutException:
-            print(Style.BRIGHT + Fore.RED + "Loading took too much time!")
-            self.user_feedback.emit({'message': 'Loading took too much time!', 'title': 'Timeout', 'message_type': 'error'})
+        except TimeoutException as te:
+            print(Style.BRIGHT + Fore.RED + "Loading took too much time!\n" + str(te))
+            self.user_feedback.emit({'message': 'Loading took too much time!\nEnsure that the web driver selected has been installed on this PC and the path set in the environment variable.', 'title': 'Timeout', 'message_type': 'error'})
+            ndr_driver.close()
+            self.enable_scrape_button.emit(True)  # Send a signal to enable the scrape button
+            return
 
         # Get the number of entries shown per page from the drop-down box
         entries_per_page = int(Select(ndr_driver.find_element(By.XPATH,'//*[@id="uploadDataTable_length"]/label/select')).first_selected_option.text)
@@ -226,6 +237,10 @@ class ScrappingWorkerThread(QThread):
                     time.sleep(relax_seconds)
             except Exception as e:
                 print(Style.BRIGHT + Fore.RED + 'Move to next page error:\n' + str(e))
+                self.user_feedback.emit({'message': 'Move to next page error!\n' + e.__dict__['msg'], 'title': 'Timeout', 'message_type': 'error'})
+                ndr_driver.close()
+                self.enable_scrape_button.emit(True)  # Send a signal to enable the scrape button
+                return
 
             for row in range(1, entries_per_page + 1):
                 try:
@@ -254,10 +269,11 @@ class ScrappingWorkerThread(QThread):
                     self.update_progress.emit(progress_counter)
                     # print('progress_counter: ' + str(progress_counter) + '% ::rows_of_records_processed_counter: ' + str(rows_of_records_processed_counter) + ' @ move_to_next_page: ' + str(move_to_next_page))
                 except StaleElementReferenceException as e:
-                    ndr_driver.close()
-                    print(Style.BRIGHT + Fore.RED + "\nThe scrapping was not successful.\nTry running the application again with a high page load waiting time, this will help if you have\n many pages to scrape or your internet connection is of poor quality.\n")
+                    print(Style.BRIGHT + Fore.RED + "\nThe scrapping was not successful.\nTry running the application again with a high page load waiting time, this will help if you have\n many pages to scrape or your internet connection is of poor quality.\n\n" + str(e))
                     msg = '\nThe scrapping was not successful.\nTry running the application again with a high page load waiting time, this will help if you have many pages to scrape or your internet connection is of poor quality.\n\nError message:\n' + str(e.__dict__['msg'])
                     self.user_feedback.emit({'message': msg, 'title': 'Scrapping failed', 'message_type': 'error'})
+                    ndr_driver.close()
+                    self.enable_scrape_button.emit(True)                    # Send a signal to enable the scrape button
                     return
 
             # Increment counter to move to the next page
@@ -276,6 +292,7 @@ class ScrappingWorkerThread(QThread):
         # Write scrapped data to disk. It is very important to install the openpyxl module for the export to .xlsx file type.
         datafile.to_excel(output_file, sheet_name='NDR upload tracker')
         ndr_driver.close()
+        self.enable_scrape_button.emit(True)              # Send a signal to enable the scrape button when the processing finish
 
         # Record the time processing finished and compute duration
         elapse_time = time.time() - start_time

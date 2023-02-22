@@ -33,9 +33,15 @@ QPushButton {
     padding: 10px;
     font-size: 16px;
 }
+
 QPushButton:hover {
     font-size: 17px;
     background-color: #D25853;
+}
+
+QPushButton::disabled {
+    background-color: #BABABA;
+    color: black;
 }
 
 QLineEdit {
