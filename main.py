@@ -296,12 +296,13 @@ class ScrappingWorkerThread(QThread):
 
         # Record the time processing finished and compute duration
         elapse_time = time.time() - start_time
-        hrs = elapse_time // 36000
-        mints = elapse_time // 60
+        hrs = elapse_time // 3600
+        mints = (elapse_time - 3600) // 60 if elapse_time > 3600 else elapse_time // 60
         secs = elapse_time % 60
+        print(Style.BRIGHT + Fore.GREEN + '\nElapse_time: ' + str(elapse_time))
 
         process_feedback = 'A total row of ' + str(len(username)) + ' datasets were scrapped and saved to a file located at ' + output_file
-        process_feedback += '\n\nProcessed time [Hr : Min : Sec] : {:0>2d}'.format(int(hrs)) + ':' + '{:0>2d}'.format(int(mints)) + ':' + '{:0>2d}'.format(int(secs))
+        process_feedback += '\n\nProcessed time took: {:0>2d}'.format(int(hrs)) + ' hr : ' + '{:0>2d}'.format(int(mints)) + ' min : ' + '{:0>2d}'.format(int(secs)) + ' sec'
         print(Style.BRIGHT + Fore.GREEN + '\n' + process_feedback + '\n')
         self.user_feedback.emit({'message': process_feedback, 'title': 'Scrapping successful', 'message_type': 'success'})
 
