@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/img_assets">
+        <file>about.png</file>
+        <file>add_url.png</file>
+        <file>assets.qrc</file>
+        <file>clear.png</file>
+        <file>config.png</file>
+        <file>content.png</file>
+        <file>exit.png</file>
+        <file>find.png</file>
+        <file>help.png</file>
+        <file>home.png</file>
+        <file>icon.png</file>
+        <file>info.png</file>
+        <file>remove.png</file>
+        <file>resume.png</file>
+        <file>sort.png</file>
+        <file>stop.png</file>
+        <file>www.png</file>
+    </qresource>
+</RCC>

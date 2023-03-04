@@ -1,2 +1,5 @@
 .idea
 virtual_env
+build
+dist
+ndr_utility.spec
