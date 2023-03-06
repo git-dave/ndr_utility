@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import ctypes
 import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
@@ -30,9 +31,11 @@ class MainApp(QtWidgets.QMainWindow):
     # Function to initialize UI components
     def initializer(self):
         # Populate the web driver drop down box with the list below
-        webdriver_list = ['Chrome web driver', 'Firefox web driver', 'Opera web driver', 'Edge web driver']
+        # webdriver_list = ['Chrome web driver', 'Firefox web driver', 'Opera web driver', 'Edge web driver']
+        webdriver_list = ['Chrome web driver', 'Edge web driver']
         self.ui.cbo_webdriver.addItems(webdriver_list)
-        self.ui.cbo_webdriver.setCurrentIndex(0)            # Remove in production
+        # self.ui.cbo_webdriver.setCurrentIndex(0)            # Remove in production
+
         # Set the tool tips for the UI components
         self.ui.txt_email.setToolTip('Your NDR login email.')
         self.ui.txt_password.setToolTip('Your NDR login password.')
@@ -148,16 +151,30 @@ class ScrappingWorkerThread(QThread):
         ndr_driver = ''                                                         # Default URL is blank
         self.enable_scrape_button.emit(False)                                   # Send a signal to disable the scrape button when the processing start
 
+        # Get the monitor resolution, use it to re-scale the width to 34.5% and the height to 75% of the resolution
+        user32 = ctypes.windll.user32
+        width = user32.GetSystemMetrics(0)
+        width_scaled = int(width * 0.345)
+        height = user32.GetSystemMetrics(1)
+        height_scaled = int(height * 0.75)
+
         try:
             # Decide which web drive to use
             if 'chrome' in self.input_data['driver'].lower():
-                ndr_driver = webdriver.Chrome()
+                opt = webdriver.ChromeOptions()
+                opt.add_argument('--window-size={},{}'.format(str(width_scaled), str(height_scaled)))
+                ndr_driver = webdriver.Chrome(options=opt)
+
             if 'firefox' in self.input_data['driver'].lower():
                 ndr_driver = webdriver.Firefox()
+
             if 'opera' in self.input_data['driver'].lower():
                 ndr_driver = webdriver.Opera()
+
             if 'edge' in self.input_data['driver'].lower():
-                ndr_driver = webdriver.Edge()
+                opt = webdriver.EdgeOptions()
+                opt.add_argument('--window-size={},{}'.format(str(width_scaled), str(height_scaled)))
+                ndr_driver = webdriver.Edge(options=opt)
 
             ndr_driver.get(self.input_data['url'])
         except Exception as e:
@@ -310,6 +327,7 @@ class ScrappingWorkerThread(QThread):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     main_app = MainApp()
+
     # Load the style sheet file and apply it.
     with open('qss/theme.qss', 'r') as file:
         main_app.setStyleSheet(file.read())
